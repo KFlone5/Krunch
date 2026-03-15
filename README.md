@@ -2,6 +2,9 @@
 
 Custom wordlist generator with pattern-based rules, inspired by the classic Crunch tool from Kali Linux.
 
+## Note
+Krunch is currently in early development. Argument parsing (pattern, output file, custom charset) has not been added yet, but will be coming soon. For now, to generate a wordlist you need to manually change the variables inside the `main()` function in the source code.
+
 ## Installation
 ```bash
 git clone https://github.com/KFlone5/Krunch.git
