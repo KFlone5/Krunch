@@ -1,0 +1,41 @@
+name: Build Executables
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.x"
+
+      - run: pip install pyinstaller
+
+      - run: pyinstaller --onefile Krunch.py
+
+      - if: matrix.os == 'windows-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Krunch-windows
+          path: dist/Krunch.exe
+
+      - if: matrix.os == 'ubuntu-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Krunch-linux
+          path: dist/Krunch
+
+      - if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: Krunch-macos
+          path: dist/Krunch
