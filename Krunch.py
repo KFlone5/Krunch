@@ -6,13 +6,6 @@ UPP_CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUM_CHARSET = "0123456789"
 SYM_CHARSET = "!@#$%^&*()-_+=~`[]{}|\\:;\"'<>,.?/"
 
-def clear_console():
-    # Clear console for all os
-    if os.name == 'nt':
-        _ = os.system('cls')
-    else:
-        _ = os.system('clear')
-
 def print_welcome():
     print("""$$\   $$\                                         $$\       
 $$ | $$  |                                        $$ |      
@@ -65,29 +58,24 @@ def wordlist_generator(pattern, strings, output_file):
         generate(0, "")
 
 def main():
-    clear_console()
-
     print_welcome()
     charset = ""
     
     print("Please enter the pattern of the password")
     pattern = input(">>>")
-
-    if pattern == "":
-        print("Pattern is empty. Nothing to generate.")
     
-    else:
-        if '@' in pattern:
-            print("Please enter the charset")
-            charset = input(">>>")
-        
-        print("Enter the filename where the wordlist will be written (out.txt by default)")
-        output_file = input(">>>")
+    if '@' in pattern:
+        print("Please enter the charset")
+        charset = input(">>>")
+    
+    print("Enter the filename where the wordlist will be written (out.txt by default)")
+    output_file = input(">>>")
 
-        if output_file == "":
-            output_file = "out.txt"
-        
-        wordlist_generator(pattern, charset, output_file)
+    if output_file == "":
+        output_file = "out.txt"
+    print(f"Wordlist will be saved as \"{output_file}\" at this directory \"{os.getcwd()}\"")
+    
+    wordlist_generator(pattern, charset, output_file)
 
 if __name__ == "__main__":
     main()
