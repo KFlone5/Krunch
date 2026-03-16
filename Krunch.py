@@ -76,6 +76,7 @@ def main():
     print(f"Wordlist will be saved as \"{output_file}\" at this directory \"{os.getcwd()}\"")
     
     wordlist_generator(pattern, charset, output_file)
+    print("Krunch has finished generating the wordlist!")
 
 if __name__ == "__main__":
     main()
