@@ -63,7 +63,7 @@ def calculate_stats(pattern, strings):
     print(f"{total_kb:.2f} KB")
     print(f"{total_mb:.2f} MB")
     print(f"{total_gb:.2f} GB")
-    print(f"Krunch will now generate the following number of passwords: {total_passwords}")
+    print(f"Number of passwords will be generated: {total_passwords}")
     
 def wordlist_generator(pattern, strings, output_file):
     charsets = []
