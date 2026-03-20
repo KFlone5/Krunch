@@ -15,7 +15,7 @@ No external dependencies, just Python 3.
 
 ## Usage
 ```bash
-python Krunch.py -t <pattern> -o <output_file> -s <custom_charset>
+python Krunch.py -p <pattern> -o <output_file> -c <custom_charset>
 ```
 
 ## Arguments
