@@ -1,4 +1,5 @@
 import os
+import argparse
 
 # CONST
 LOW_CHARSET = "abcdefghijklmnopqrstuvwxyz"
@@ -6,12 +7,6 @@ UPP_CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUM_CHARSET = "0123456789"
 SYM_CHARSET = "!@#$%^&*()-_+=~`[]{}|\\:;\"'<>,.?/"
 
-def clear_console():
-    # Clear console for all os
-    if os.name == 'nt':
-        _ = os.system('cls')
-    else:
-        _ = os.system('clear')
 
 def print_welcome():
     print("""$$\   $$\                                         $$\       
@@ -95,32 +90,42 @@ def wordlist_generator(pattern, strings, output_file):
         generate(0, "")
 
 def main():
-    clear_console()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-p", "--pattern", type=str, help="Pattern of the password for example (LTR202%@Y)")
+    parser.add_argument("-c", "--charset", type=str, nargs="*", help="Custom charset for the pattern filled with the custom symbols for example (52iO*$}</)")
+    parser.add_argument("-o", "--output", type=str, help="Name of the output file (by default \"out.txt\")")
 
-    print_welcome()
-    charset = ""
-    
-    print("Please enter the pattern of the password")
-    pattern = input(">>>")
+    args = parser.parse_args()
 
-    if pattern == "":
-        print("Pattern is empty. Nothing to generate.")
-    
+    if args is None:
+        print(args)
     else:
-        if '@' in pattern:
-            print("Please enter the charset")
-            charset = input(">>>")
-        
-        print("Enter the filename where the wordlist will be written (out.txt by default)")
-        output_file = input(">>>")
+        pattern = args.pattern
+        charset = args.charset
+        output_file = args.output
 
-        if output_file == "":
-            output_file = "out.txt"
-        print(f"Wordlist will be saved as \"{output_file}\" at this directory \"{os.getcwd()}\"\n")
+        if pattern == "":
+            print("Pattern is empty. Nothing to generate.")
+            print(args.pattern)
+
+        if charset == None:
+            charset = ""
         
-        calculate_stats(pattern, charset)
-        wordlist_generator(pattern, charset, output_file)
-        print("Krunch has finished generating the wordlist!")
+        if ("@" in pattern) and (charset == ""):
+            print("Pattern has \"@\" but the charset was not specified.")
+            print(args.charset)
+
+        if output_file == None:
+            output_file = "out.txt"
+        
+        if (pattern != "") and (not ("@" in pattern) and (charset == "")):
+            if output_file == "":
+                output_file = "out.txt"
+            print(f"Wordlist will be saved as \"{output_file}\" at this directory \"{os.getcwd()}\"\n")
+            
+            calculate_stats(pattern, charset)
+            wordlist_generator(pattern, charset, output_file)
+            print("Krunch has finished generating the wordlist!")
 
 if __name__ == "__main__":
     main()
