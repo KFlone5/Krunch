@@ -92,8 +92,8 @@ def wordlist_generator(pattern, strings, output_file):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("-p", "--pattern", type=str, help="Pattern of the password for example (LTR202%@Y)")
-    parser.add_argument("-c", "--charset", type=str, default="", nargs="*", help="Custom charset for the pattern filled with the custom symbols for example (52iO*$}</)")
+    parser.add_argument("-p", "--pattern", type=str, help="Pattern template for wordlist generation")
+    parser.add_argument("-c", "--charset", type=str, default="", help="Custom charset used for @ in the pattern")
     parser.add_argument("-o", "--output", type=str, default="out.txt", help="Name of the output file (by default \"out.txt\")")
 
     args = parser.parse_args()
