@@ -1,36 +1,32 @@
 # Krunch
-
 Custom wordlist generator with pattern-based rules, inspired by the classic Crunch tool from Kali Linux.
 
 ## Note
-Krunch is currently in early development. Right now it runs as an interactive CLI, meaning it will ask you for input step by step after launch. Some of the text in this README (Usage, Arguments, Example) describes the planned argument-based usage and is not fully accurate yet. Argument-based usage (e.g. `python Krunch.py -t AIS@% -o wordlist.txt`) will be added in a future update.
+Krunch is still in early development, so things may change between versions. The old interactive CLI version is still available in releases under v1.x.x if needed.
 
 ## Installation
 ```bash
 git clone https://github.com/KFlone5/Krunch.git
 cd Krunch
 ```
-
 No external dependencies, just Python 3.
 
 ## Usage
 ```bash
-python Krunch.py -p <pattern> -o <output_file> -c <custom_charset>
+python Krunch.py -p <pattern> -c <custom_charset> -o <output_file>
 ```
 
 ## Arguments
-
 | Argument | Description |
 |----------|-------------|
-| `-t` | Pattern template for wordlist generation |
-| `-o` | Output file to save the wordlist |
-| `-s` | Custom charset used for `@` in the pattern |
+| `-p` | Pattern template for wordlist generation |
+| `-c` | Custom charset used for `@` in the pattern |
+| `-o` | Output file to save the wordlist (default: `out.txt`) |
 
 ## Pattern Symbols
-
 | Symbol | Meaning |
 |--------|---------|
-| `@` | Characters from your custom charset (`-s`) |
+| `@` | Characters from your custom charset (`-c`) |
 | `%` | Digits `0-9` |
 | `^` | Special characters accessed via Shift + number key (`!@#$%^&*()`) |
 | `!` | All letters, both uppercase and lowercase (`a-z A-Z`) |
@@ -39,11 +35,9 @@ python Krunch.py -p <pattern> -o <output_file> -c <custom_charset>
 
 ## Example
 ```bash
-python Krunch.py -t AIS@@%^!$& -o wordlist.txt -s "LlTtRr0123456uU+=-_!@#$%^&*(){}[]|\/,.<>"
+python Krunch.py -p AIS@@%^!$& -c "LlTtRr0123456uU+=-_!@#$%^&*(){}[]|\/,.<>" -o wordlist.txt
 ```
-
 This generates words that start with `AIS`, followed by characters based on the pattern rules.
 
 ## Inspired By
-
 Crunch, the wordlist generator that comes pre-installed in Kali Linux.
