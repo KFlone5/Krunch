@@ -2,7 +2,8 @@
 Custom wordlist generator with pattern-based rules, inspired by the classic Crunch tool from Kali Linux.
 
 ## Note
-Krunch is still in early development, so things may change between versions. The old interactive CLI version is still available in releases under v1.x.x if needed.
+~~Krunch is still in early development, so things may change between versions. The old interactive CLI version is still available in releases under v1.x.x if needed.~~
+If you want to use CLI version of Krunch. The older version of Krunch is available in the Releases under the versions v1.x.x
 
 ## Installation
 ```bash
