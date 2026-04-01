@@ -7,6 +7,7 @@ LOW_CHARSET = "abcdefghijklmnopqrstuvwxyz"
 UPP_CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUM_CHARSET = "0123456789"
 SYM_CHARSET = "!@#$%^&*()-_+=~`[]{}|\\:;\"'<>,.?/"
+ALL_CHARSET = LOW_CHARSET + UPP_CHARSET + NUM_CHARSET + SYM_CHARSET
 
 
 def print_welcome():
@@ -28,6 +29,7 @@ Pattern Symbols
 | !  | All letters, both uppercase and lowercase (a-z A-Z)             |
 | $  | Lowercase letters only (a-z)                                    |
 | &  | Uppercase letters only (A-Z)                                    |
+| *  | All keys in keyboard                                            |
 -----------------------------------------------------------------------/    
 \n\n""")
 
@@ -47,6 +49,8 @@ def calculate_stats(pattern, strings):
         elif char == "$":
             total_passwords *= len(LOW_CHARSET)
         elif char == "&":
+            total_passwords *= len(UPP_CHARSET)
+        elif char == "*":
             total_passwords *= len(UPP_CHARSET)
 
     total_bytes = total_passwords * (password_length + 1)
@@ -77,6 +81,8 @@ def wordlist_generator(pattern, strings, output_file):
             charsets.append(LOW_CHARSET)
         elif char == "&":
             charsets.append(UPP_CHARSET)
+        elif char == "*":
+            charsets.append(ALL_CHARSET)
         else:
             charsets.append(char)
 
