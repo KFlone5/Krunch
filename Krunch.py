@@ -1,6 +1,7 @@
 import os
 import argparse
 import sys
+from itertools import product
 
 # CONST
 LOW_CHARSET = "abcdefghijklmnopqrstuvwxyz"
@@ -33,6 +34,7 @@ Pattern Symbols
 -----------------------------------------------------------------------/    
 \n\n""")
 
+
 def calculate_stats(pattern, strings):
     total_passwords = 1
     password_length = len(pattern)
@@ -53,8 +55,7 @@ def calculate_stats(pattern, strings):
         elif char == "*":
             total_passwords *= len(ALL_CHARSET)
 
-    # +1 for the \n after each password (file opened with newline='\n' so always 1 byte)
-    total_bytes = total_passwords * (password_length + 1)
+    total_bytes = total_passwords * (password_length + 1)  # +1 for \n
     total_kb = total_bytes / 1024
     total_mb = total_kb / 1024
     total_gb = total_mb / 1024
@@ -65,7 +66,8 @@ def calculate_stats(pattern, strings):
     print(f"{total_mb:.2f} MB")
     print(f"{total_gb:.2f} GB")
     print(f"Number of passwords will be generated: {total_passwords}")
-    
+
+
 def wordlist_generator(pattern, strings, output_file):
     charsets = []
 
@@ -87,25 +89,18 @@ def wordlist_generator(pattern, strings, output_file):
         else:
             charsets.append(char)
 
-    count = [0]
+    count = 0
 
-    def generate(index, current_word):
-        if index == len(charsets):
-            f.write(current_word + "\n")
-            count[0] += 1
-            if count[0] % 1000 == 0:
-                print(f"\rGenerated: {count[0]:,} passwords", end="", flush=True)
-            return
-        for char in charsets[index]:
-            generate(index + 1, current_word + char)
-
-    # newline='\n' forces Unix line endings (1 byte per newline) on all platforms,
-    # so the file size matches calculate_stats() exactly
+    # newline='\n' so file size matches calculate_stats() on all platforms
     with open(output_file, "w", newline='\n') as f:
-        generate(0, "")
+        for combo in product(*charsets):
+            f.write("".join(combo) + "\n")
+            count += 1
+            if count % 1000 == 0:
+                print(f"\rGenerated: {count:,} passwords", end="", flush=True)
 
-    # Print final count on a new line
-    print(f"\rGenerated: {count[0]:,} passwords")
+    print(f"\rGenerated: {count:,} passwords")
+
 
 def main():
     parser = argparse.ArgumentParser()
@@ -134,10 +129,11 @@ def main():
         return
 
     print(f"Wordlist will be saved as \"{output_file}\" at this directory \"{os.getcwd()}\"\n")
-            
+
     calculate_stats(pattern, charset)
     wordlist_generator(pattern, charset, output_file)
     print("Krunch has finished generating the wordlist!")
+
 
 if __name__ == "__main__":
     main()
