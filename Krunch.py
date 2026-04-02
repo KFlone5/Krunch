@@ -7,7 +7,7 @@ LOW_CHARSET = "abcdefghijklmnopqrstuvwxyz"
 UPP_CHARSET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 NUM_CHARSET = "0123456789"
 SYM_CHARSET = "!@#$%^&*()-_+=~`[]{}|\\:;\"'<>,.?/"
-ALL_CHARSET = LOW_CHARSET + UPP_CHARSET + NUM_CHARSET + SYM_CHARSET
+ALL_CHARSET = (LOW_CHARSET + UPP_CHARSET + NUM_CHARSET + SYM_CHARSET)
 
 
 def print_welcome():
@@ -51,8 +51,9 @@ def calculate_stats(pattern, strings):
         elif char == "&":
             total_passwords *= len(UPP_CHARSET)
         elif char == "*":
-            total_passwords *= len(UPP_CHARSET)
+            total_passwords *= len(ALL_CHARSET)
 
+    # +1 for the \n after each password (file opened with newline='\n' so always 1 byte)
     total_bytes = total_passwords * (password_length + 1)
     total_kb = total_bytes / 1024
     total_mb = total_kb / 1024
@@ -86,15 +87,25 @@ def wordlist_generator(pattern, strings, output_file):
         else:
             charsets.append(char)
 
+    count = [0]
+
     def generate(index, current_word):
         if index == len(charsets):
             f.write(current_word + "\n")
+            count[0] += 1
+            if count[0] % 1000 == 0:
+                print(f"\rGenerated: {count[0]:,} passwords", end="", flush=True)
             return
         for char in charsets[index]:
             generate(index + 1, current_word + char)
 
-    with open(output_file, "w") as f:
+    # newline='\n' forces Unix line endings (1 byte per newline) on all platforms,
+    # so the file size matches calculate_stats() exactly
+    with open(output_file, "w", newline='\n') as f:
         generate(0, "")
+
+    # Print final count on a new line
+    print(f"\rGenerated: {count[0]:,} passwords")
 
 def main():
     parser = argparse.ArgumentParser()
